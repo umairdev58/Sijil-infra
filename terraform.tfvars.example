@@ -1,0 +1,19 @@
+# Example tfvars for Sijil backend infra (copy to terraform.tfvars and edit)
+
+region           = "ap-south-1"
+key_name         = "your-keypair-name"
+allowed_ssh_cidr = "1.2.3.4/32" # replace with your IP
+allocate_eip     = false
+
+app_repo_url     = "https://github.com/your-user/Sijil.git"
+app_repo_branch  = "main"
+
+# These become lines in backend/.env
+backend_env = {
+  PORT        = "8000"
+  JWT_SECRET  = "change-me"
+  MONGODB_URI = "mongodb+srv://user:pass@cluster.mongodb.net/sijil"
+  NODE_ENV    = "production"
+}
+
+
