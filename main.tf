@@ -113,6 +113,14 @@ resource "aws_instance" "app" {
   vpc_security_group_ids = [aws_security_group.app_sg.id]
   user_data_base64       = data.template_cloudinit_config.init.rendered
 
+  # Prevent accidental replacement
+  lifecycle {
+    ignore_changes = [
+      ami,  # Allow AMI updates without replacing instance
+    ]
+    create_before_destroy = false
+  }
+
   tags = {
     Name = "sijil-backend"
   }
@@ -131,5 +139,4 @@ output "public_ip" {
 output "ssh_command" {
   value = "ssh -i ~/.ssh/${var.key_name}.pem ubuntu@${coalesce(try(aws_eip.app_eip[0].public_ip, null), aws_instance.app.public_ip)}"
 }
-
 
